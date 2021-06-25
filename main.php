@@ -8,11 +8,12 @@ if (isset($_GET['unlink']) && $_GET['unlink']) {
     $stmt->execute([':task_id' => $_GET['unlink'], ':user_id' => $_SESSION['id']]);
 }
 ?>
- 
+
+<body>
 <!-- Pasek u góry -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">Navbar</a>
+        <a class="navbar-brand" href="#">KalendarzToDo</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -41,8 +42,6 @@ if (isset($_GET['unlink']) && $_GET['unlink']) {
 
 <!-- Główny element -->
 <main class="float-container">
-
-
     <div>
         <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white float-child" style="width: 380px;">
             <a href="/" class="d-flex align-items-center flex-shrink-0 p-3 link-dark text-decoration-none border-bottom">

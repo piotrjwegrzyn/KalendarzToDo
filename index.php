@@ -29,8 +29,8 @@
     }
 ?>
 
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en" class="has-sticky-footer">
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -47,7 +47,6 @@
     <title>Kalendarz ToDo</title>
 
 </head>
-<body>
 
 <?php
     #--------------------ŁADOWANIE-STRON--------------------
@@ -61,11 +60,11 @@
         include('signin.php');
     }
 ?>
-
+<!--
 <footer class="footer" role="contentinfo">
-    Some footer Content
+    Kalendarz ToDo
 </footer>
-
+-->
 <!-- nasz własny Javascript -->
 <script>
 

@@ -2,6 +2,8 @@
 if (!defined('IN_INDEX')) { exit("Nie można uruchomić tego pliku bezpośrednio."); }
 ?>
 
+<body class="body-sign">
+
 <main class="form-signin">
   <form action='/signin' method='POST'>
     <h1 class="h3 mb-3 fw-normal">Please sign in</h1>

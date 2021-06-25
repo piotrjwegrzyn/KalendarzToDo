@@ -24,6 +24,8 @@
   }
 ?>
 
+<body class="body-sign">
+
 <main class="form-signin">
   <form action='/signup' method='POST'>
     <h1 class="h3 mb-3 fw-normal">Please sign up</h1>
