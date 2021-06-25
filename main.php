@@ -8,7 +8,7 @@ if (isset($_GET['unlink']) && $_GET['unlink']) {
     $stmt->execute([':task_id' => $_GET['unlink'], ':user_id' => $_SESSION['id']]);
 }
 ?>
-
+ 
 <!-- Pasek u góry -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
