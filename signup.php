@@ -3,7 +3,7 @@
 
   # s119.labagh.pl?page=register
   function register_user($post, $config, $server, $dbh) {
-  	if !($_POST['floatingInput'] && $_POST['floatingPassword'] && $_POST['floatingRetype'])
+  	if (!($_POST['floatingInput'] && $_POST['floatingPassword'] && $_POST['floatingRetype']))
   		return '<span style="font-weight: bold; color: red;">Uzupełnij wszystkie pola!</span>';
 
   	if (!preg_match('/^[a-zA-Z0-9\-\_\.]+\@[a-zA-Z0-9\-\_\.]+\.[a-zA-Z]{2,5}$/D', $post['floatingInput']))
@@ -23,23 +23,6 @@
   	}
   }
 ?>
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="">
-  <title>Sign up KalendarzToDo</title>
-
-  <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/sign-in/">
-
-  <!-- Bootstrap core CSS -->
-  <link href="css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
-  <meta name="theme-color" content="#7952b3">
-  <!-- Custom styles for this template -->
-  <link href="signin.css" rel="stylesheet">
-</head>
-<body class="text-center">
 
 <main class="form-signin">
   <form>
@@ -69,6 +52,3 @@
   }
 ?>
 </main>
-
-</body>
-</html>
