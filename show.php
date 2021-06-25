@@ -3,9 +3,9 @@ if (!defined('IN_INDEX')) { exit("Nie można uruchomić tego pliku bezpośrednio
 ?>
 <div class="list-group-item-lepszy" id="user_id">
 <?php
-	$stmt = $dbh->prepare("SELECT * FROM tasks WHERE id = :show AND (user_id = :user_id OR id = (SELECT task_id FROM links WHERE guest_id = :user_id AND task_id = :task_id))");
+	$stmt = $dbh->prepare("SELECT * FROM tasks WHERE id = :task_id AND (user_id = :user_id OR id = (SELECT task_id FROM links WHERE guest_id = :user_id AND task_id = :task_id))");
 	$stmt->execute([':task_id' => $_GET['id'], ':user_id' => $_SESSION['id']]);
-	$row = $stmt->fetch(PDO::FETCH_ASSOC)
+	$row = $stmt->fetch(PDO::FETCH_ASSOC);
 	if ($row) {
 	    if ($row['user_id'] == $_SESSION['id']) {
 			$full_access = 1;
@@ -23,7 +23,7 @@ if (!defined('IN_INDEX')) { exit("Nie można uruchomić tego pliku bezpośrednio
 	if ($full_access == 1) {
 		print '
 	<div style="grid-area: edit_icon_button">
-		<a href="edit/' . $row['id'] . '">
+		<a href="/edit/' . $row['id'] . '">
 		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
 			<path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
 		</svg>
@@ -38,10 +38,10 @@ if (!defined('IN_INDEX')) { exit("Nie można uruchomić tego pliku bezpośrednio
 <?php
 	if ($full_access == 1) {
 		print
-		'<a href="edit/'.$row['id'].'/delete">';
+		'<a href="/edit/'.$row['id'].'/delete">';
 	} else {
 		print
-		'<a href="unlink/'.$row['id'].'">';
+		'<a href="/unlink/'.$row['id'].'">';
 	}
 ?>
 		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-x" viewBox="0 0 16 16">
@@ -59,14 +59,14 @@ if (!defined('IN_INDEX')) { exit("Nie można uruchomić tego pliku bezpośrednio
 <?php
 	if ($full_access == 1) {
 		$stmt = $dbh->prepare("SELECT email FROM users WHERE id = (SELECT guest_id FROM links WHERE task_id = :task_id)");
-		$stmt->execute(':task_id' => $row['id']]);
+		$stmt->execute([':task_id' => $row['id']]);
 		while ($username = $stmt->fetch(PDO::FETCH_ASSOC)) {
-			print '<p> Gość: ' . $username['email'] . '</p>'
+			print '<p> Gość: ' . $username['email'] . '</p>';
 		}
 	} else {
 		$stmt = $dbh->prepare("SELECT email FROM users WHERE id = :user_id");
-		$stmt->execute(':user_id' => $row['user_id']]);
-		$username = $stmt->fetch(PDO::FETCH_ASSOC))
+		$stmt->execute([':user_id' => $row['user_id']]);
+		$username = $stmt->fetch(PDO::FETCH_ASSOC);
 		if ($username) {
 			print '<p> Właściciel: ' . $username['email'] . '</p>';
 		}
