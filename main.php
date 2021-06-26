@@ -21,11 +21,11 @@ if (isset($_GET['unlink']) && $_GET['unlink']) {
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    <a class="nav-link active" aria-current="page" href="/">Home</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="create">Add new task</a>
+                    <a class="nav-link" href="/create">Add new task</a>
                 </li>
 
                 <li class="nav-item">
@@ -33,7 +33,7 @@ if (isset($_GET['unlink']) && $_GET['unlink']) {
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="logout">Log out</a>
+                    <a class="nav-link" href="/logout">Log out</a>
                 </li>
             </ul>
         </div>

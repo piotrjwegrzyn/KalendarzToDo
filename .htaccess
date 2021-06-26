@@ -1,6 +1,6 @@
 RewriteEngine On
 RewriteRule ^logout$ index.php?logout=1 [NC,L,QSA]
-RewriteRule ^([a-zA-Z0-9-_]+)$ index.php?page=$1 [NC,L,QSA]
+RewriteRule ^([a-zA-Z0-9-_\.]+)$ index.php?page=$1 [NC,L,QSA]
 RewriteRule ^unlink\/([0-9]+)$ index.php?unlink=$1 [NC,L,QSA]
 RewriteRule ^(show|edit)\/([0-9]+)$ index.php?page=$1&id=$2 [NC,L,QSA]
 RewriteRule ^edit\/([0-9]+)\/delete$ index.php?page=edit&id=$1&delete=1 [NC,L,QSA]
