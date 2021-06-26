@@ -4,6 +4,14 @@
 	# o 08:00 rano każdego dnia
 
 	include("config.inc.php");
+	include('mail_password.php');
+
+	use PHPMailer\PHPMailer\PHPMailer;
+	use PHPMailer\PHPMailer\Exception;
+	use PHPMailer\PHPMailer\SMTP;
+	require 'PHPMailer/Exception.php';
+	require 'PHPMailer/PHPMailer.php';
+	require 'PHPMailer/SMTP.php';
 
 	$stmt_task = $stmt;
 	$stmt_checkbox = $stmt;
@@ -12,6 +20,20 @@
 	$stmt->execute();
 	while ($user = $stmt->fetch(PDO::FETCH_ASSOC)) {
 		$anytask = 0;
+
+		$mail = new PHPMailer();
+		$mail->isSMTP();
+		$mail->SMTPAuth = true;
+		$mail->SMTPSecure = 'ssl';
+		$mail->Host = 'smtp.gmail.com';
+		$mail->Port = '465';
+		$mail->isHTML();
+		$mail->Username = 'todo.calendars@gmail.com';
+		$mail->Password = $mail_password;
+		$mail->SetFrom('todo.calendars@gmail.com');
+		$mail->Subject = 'Daily task notification';
+		$mail->AddAddress($user['email']);
+
 		$template = '
 <html>
 	<body>
@@ -29,7 +51,6 @@
 		$stmt_task->execute([':user_id' => $user['id']]);
 		while ($task = $stmt_task->fetch(PDO::FETCH_ASSOC)) {
 			$anytask = 1;
-			print $task['id'];
 			$template = $template . '
 			<li>
 				<p>'.$task['name'].'</p>
@@ -54,7 +75,9 @@
 </html>
 		';
 		if ($anytask) {
-			mail($user['email'], 'Daily task notification', $template);
+			$mail->Body = $template;
+			$mail->Send();
+			print 'sent</br>';
 		}
 	}
 ?>
