@@ -11,7 +11,7 @@ if (isset($_GET['unlink']) && $_GET['unlink']) {
 
 <body>
 <!-- Pasek u góry -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">KalendarzToDo</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,13 +42,25 @@ if (isset($_GET['unlink']) && $_GET['unlink']) {
 
 <!-- Główny element -->
 <main class="float-container">
-    <div>
-        <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white float-child col-md-3">
-            <a href="/" class="d-flex align-items-center flex-shrink-0 p-3 link-dark text-decoration-none border-bottom">
+   <div class="row">
+      <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white float-child col-md-4">
+			<div class="row" id="list-group">
+            <a href="/" class="d-flex align-items-center flex-shrink-0 p-3 link-dark text-decoration-none border-bottom col-md-8">
                 <svg class="bi me-2" width="30" height="24"><use xlink:href="#bootstrap"/></svg>
                 <span class="fs-5 fw-semibold">List group</span>
             </a>
-            <div class="list-group list-group-flush border-bottom scrollarea">
+				<button type="button" class="btn btn-outline-secondary col-md-2">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+						<path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"></path>
+						</svg>
+            </button>
+				<button type="button" class="btn btn-outline-secondary col-md-2">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"></path>
+					</svg>
+            </button>
+			</div>
+         <div class="list-group list-group-flush border-bottom scrollarea">
 <?php
     $stmt = $dbh->prepare("SELECT * FROM tasks WHERE user_id = :user_id OR id = (SELECT task_id FROM links WHERE guest_id = :user_id) ORDER BY begin_time ASC");
     $stmt->execute([':user_id' => $_SESSION['id']]);
@@ -66,7 +78,7 @@ if (isset($_GET['unlink']) && $_GET['unlink']) {
             </div>
         </div>
 
-        <div class="container mb-5 float-child col-md-6">
+        <div class="float-child col-md-8">
             <ul class="list-group">
                 <li class="list-group-item">
 <?php
@@ -79,8 +91,5 @@ if (isset($_GET['unlink']) && $_GET['unlink']) {
                 </li>
             </ul>
         </div>
-		  <div class="col-md-3">
-				<p>!!!!!!!!!!!!!!!!!!</p>
-		  </div>
     </div>
 </main>

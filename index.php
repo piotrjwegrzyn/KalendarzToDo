@@ -25,14 +25,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/sign-in/">
     <!-- nasz własny CSS -->
-    <link href="style.css" rel="stylesheet">
+    <link href="/style.css" rel="stylesheet">
+    
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico"/>
 
     <meta name="theme-color" content="#7952b3">
 
-    <title>Kalendarz ToDo</title>
+    <title>To Do Calendar</title>
 
 </head>
 
@@ -48,11 +50,13 @@
         include('signin.php');
     }
 ?>
-<!--
-<footer class="footer" role="contentinfo">
-    Kalendarz ToDo
+
+<footer class="page-footer font-small blue fixed-bottom">
+    <div class="footer-copyright text-center py-3">
+        <span>Błaszczyna © Kwak © Węgrzyn</span>
+    </div>
 </footer>
--->
+
 <!-- nasz własny Javascript -->
 <script>
 
@@ -66,7 +70,8 @@
 </script>
 
 <!-- Bootstrap -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
 </body>
 

@@ -26,28 +26,31 @@
 
 <body class="body-sign">
 
-<main class="form-signin">
-  <form action='/signup' method='POST'>
-    <h1 class="h3 mb-3 fw-normal">Please sign up</h1>
+<main class="form-sign">
+<div class="div-sign">
+    <form action='/signup' method='POST'>
+      <h1 class="h3 mb-3 fw-normal">Please sign up</h1>
 
-    <div class="form-floating">
-      <input name="email" type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-      <label for="floatingInput">Email address</label>
-    </div>
+      <div class="form-floating">
+        <input name="email" type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+        <label for="floatingInput">Email address</label>
+      </div>
 
-    <div class="form-floating">
-      <input name="password" type="password" class="form-control first-password" id="floatingPassword" placeholder="Password">
-      <label for="floatingPassword">Password</label>
-    </div>
+      <div class="form-floating">
+        <input name="password" type="password" class="form-control first-password" id="floatingPassword" placeholder="Password">
+        <label for="floatingPassword">Password</label>
+      </div>
 
-    <div class="form-floating">
-      <input name="password-retype" type="password" class="form-control" id="floatingRetype" placeholder="RetypePassword">
-      <label for="floatingRetype">Retype Password</label>
-    </div>
+      <div class="form-floating">
+        <input name="password-retype" type="password" class="form-control" id="floatingRetype" placeholder="RetypePassword">
+        <label for="floatingRetype">Retype Password</label>
+      </div>
 
-    <!-- <button class="w-100 btn btn-lg btn-primary" type="button">Sign up</button> -->
-    <input type="submit" value="REJESTRUJ">
-  </form>
+      <!-- <button class="w-100 btn btn-lg btn-primary" type="button">Sign up</button> -->
+      <input class="w-100 btn btn-lg btn-primary button-sign" type="submit" value="Sign up">
+    </form>
+    <a href="signin"><button class="w-100 btn btn-lg btn-primary button-sign" type="button">Sign in</button></a>
+  </div>
 
 <?php
 

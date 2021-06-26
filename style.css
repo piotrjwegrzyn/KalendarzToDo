@@ -1,40 +1,19 @@
-html, body, main {
+html {
     height: 100%;
 }
 
 body {
-    margin-bottom: 60px;
-}
-.footer {
-    height: 60px;
+    background-image: linear-gradient(to bottom right, rgb(60, 60, 240) , rgb(180, 180, 240));
 }
 
-.body-sign {
-    display: flex;
-    align-items: center;
-    padding-top: 40px;
-    padding-bottom: 40px;
-    background-color: #f5f5f5;
-}
-
-.body-edit {
-  display: flex;
-  align-items: center;
-  padding-top: 40px;
-  padding-bottom: 40px;
-  background-color: #f5f5f5;
-}
-
-.body-add {
-  display: flex;
-  align-items: center;
-  padding-top: 40px;
-  padding-bottom: 40px;
-  background-color: #f5f5f5;
+.footer-copyright span {
+    background-color: aliceblue;
+    padding: 10px;
+    flex-wrap: wrap;
+    border-radius: 10px;
 }
 
 .float-container {
-    border: 3px solid #fff;
     padding: 20px;
 }
 
@@ -42,7 +21,11 @@ body {
     width: 50%;
     float: left;
     padding: 20px;
-    border: 2px solid red;
+}
+
+#list-group {
+	padding-left: 15px;
+	padding-right: 15px;
 }
 
 .list-group-item-lepszy {
@@ -60,12 +43,13 @@ body {
     grid-area: description;
 }
 
-.form-signin {
-    width: 100%;
-    max-width: 330px;
-    padding: 15px;
-    margin: auto;
-}
+.body-edit {
+    display: flex;
+    align-items: center;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    background-color: aliceblue;
+  }
 
 .form-edit {
   width: 100%;
@@ -74,34 +58,54 @@ body {
   margin: auto;
 }
 
-.form-add {
-  width: 100%;
-  max-width: 330px;
-  padding: 15px;
-  margin: auto;
+
+.div-sign {
+    background-color: aliceblue;
+    padding: 5%;
+    border-radius: 10px;
 }
 
-.form-signin .form-floating:focus-within {
+.div-sign h1 {
+    text-align: center;
+}
+
+.button-sign {
+    margin-top: 10px;
+}
+
+.body-sign {
+    display: flex;
+    align-items: center;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    background-color: #f5f5f5;
+}
+
+.form-sign {
+    width: 100%;
+    max-width: 330px;
+    padding: 15px;
+    margin: auto;
+}
+
+.form-sign .form-floating:focus-within {
     z-index: 2;
 }
 
-.form-signin input[type="email"] {
+.form-sign input[type="email"] {
     margin-bottom: -1px;
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
 }
-.form-signin .first-password {
+
+.form-sign .first-password {
     margin-bottom: -1px;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
 }
 
-.form-signin input[type="password"] {
+.form-sign input[type="password"] {
     margin-bottom: -1px;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
-}
-
-button {
-    margin-top: 10px;
 }

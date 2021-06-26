@@ -13,7 +13,7 @@ if (!defined('IN_INDEX')) { exit("Nie można uruchomić tego pliku bezpośrednio
 			$full_access = 0;
 	    }
 	} else {
-		header('Location: index.php');
+		header('Location: /');
 	}
 ?>
 	<h5 class="name" style="grid-area: name"><?php print $row['name']; ?></h5>
