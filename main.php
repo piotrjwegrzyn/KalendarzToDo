@@ -43,7 +43,7 @@ if (isset($_GET['unlink']) && $_GET['unlink']) {
 <!-- Główny element -->
 <main class="float-container">
     <div>
-        <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white float-child" style="width: 380px;">
+        <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white float-child col-md-3">
             <a href="/" class="d-flex align-items-center flex-shrink-0 p-3 link-dark text-decoration-none border-bottom">
                 <svg class="bi me-2" width="30" height="24"><use xlink:href="#bootstrap"/></svg>
                 <span class="fs-5 fw-semibold">List group</span>
@@ -63,12 +63,10 @@ if (isset($_GET['unlink']) && $_GET['unlink']) {
         </a>';
     }
 ?>
-
-
             </div>
         </div>
 
-        <div class="container mb-5 float-child">
+        <div class="container mb-5 float-child col-md-6">
             <ul class="list-group">
                 <li class="list-group-item">
 <?php
@@ -81,5 +79,8 @@ if (isset($_GET['unlink']) && $_GET['unlink']) {
                 </li>
             </ul>
         </div>
+		  <div class="col-md-3">
+				<p>!!!!!!!!!!!!!!!!!!</p>
+		  </div>
     </div>
 </main>
