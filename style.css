@@ -13,19 +13,29 @@ body {
     border-radius: 10px;
 }
 
-.float-container {
-    padding: 20px;
+.button-nav {
+    border-radius: 20px;
+    background-color: darkkhaki;
 }
 
-.float-child {
-    width: 50%;
-    float: left;
-    padding: 20px;
+.header-nav {
+    align-items: center;
+    text-align: center;
+    margin-right: 1%;
+    margin-left: 1%;
+    background-color: antiquewhite;
 }
 
-#list-group {
-	padding-left: 15px;
-	padding-right: 15px;
+.nav-nav {
+    margin-top: 10px;
+    background-color: aliceblue;
+    padding: 2%;
+    border-radius: 10px;
+}
+
+.element-nav {
+    padding: 1%;
+    border-radius: 10px;
 }
 
 .list-group-item-lepszy {
@@ -57,7 +67,6 @@ body {
   padding: 15px;
   margin: auto;
 }
-
 
 .div-sign {
     background-color: aliceblue;
