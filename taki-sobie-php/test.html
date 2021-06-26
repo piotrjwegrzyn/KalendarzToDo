@@ -1,0 +1,18 @@
+<script type="text/javascript">
+	$(document).ready(function($){
+		$('#checkbox').on('click', function () {
+			var checkbox_id = $(this).data('id');
+			$.ajax({
+		        url: "https://s119.labagh.pl/ajax-checkbox.php",
+		        type: "POST",
+				data: {"checkbox_id" : checkbox_id},
+		    })
+		    .done(function( data ) {
+		        console.log("Pobrano tekst: " + data);
+		    })
+		    .fail(function( xhr, status, errorThrown ) {
+		        alert("Data fetch error");
+		    });
+		});
+	});
+</script>
