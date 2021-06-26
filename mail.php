@@ -5,9 +5,13 @@
 
 	include("config.inc.php");
 
+	$stmt_task = $stmt;
+	$stmt_checkbox = $stmt;
+
 	$stmt = $dbh->prepare("SELECT * FROM users");
 	$stmt->execute();
 	while ($user = $stmt->fetch(PDO::FETCH_ASSOC)) {
+		$anytask = 0;
 		$template = '
 <html>
 	<body>
@@ -15,40 +19,43 @@
 		<ul>
 
 		';
-		$stmt = $dbh->prepare("SELECT * FROM tasks WHERE (
+		$stmt_task = $dbh->prepare("SELECT * FROM tasks WHERE (
 		    (user_id = :user_id OR id = (SELECT task_id FROM links WHERE guest_id = :user_id))
 		    AND ((YEARWEEK(begin_time) = YEARWEEK(NOW())
 		            AND WEEKDAY(begin_time) = WEEKDAY(NOW()))
 		        OR ((YEARWEEK(end_time) = YEARWEEK(NOW())
-			            AND WEEKDAY(end_time) = WEEKDAY(NOW()))))
+			        AND WEEKDAY(end_time) = WEEKDAY(NOW()))))
 		) ORDER BY begin_time ASC");
-		$stmt->execute([':user_id' => $user['id']]);
-		while ($task = $stmt->fetch(PDO::FETCH_ASSOC)) {
-			$template = $template + '
+		$stmt_task->execute([':user_id' => $user['id']]);
+		while ($task = $stmt_task->fetch(PDO::FETCH_ASSOC)) {
+			$anytask = 1;
+			print $task['id'];
+			$template = $template . '
 			<li>
 				<p>'.$task['name'].'</p>
 					<ul>
 			';
 
-			$stmt = $dbh->prepare("SELECT * FROM checkboxes WHERE task_id = :task_id");
-			$stmt->execute([':task_id' => $task['id']]);
-			while ($checkbox = $stmt->fetch(PDO::FETCH_ASSOC)) {
-				$template = $template + '
+			$stmt_checkbox = $dbh->prepare("SELECT * FROM checkboxes WHERE task_id = :task_id");
+			$stmt_checkbox->execute([':task_id' => $task['id']]);
+			while ($checkbox = $stmt_checkbox->fetch(PDO::FETCH_ASSOC)) {
+				$template = $template . '
 						<li>'.$checkbox['name'].'</li>
 				';
 			}
-			$template = $template + '
+			$template = $template . '
 					</ul>
 				</li>
 			';
 		}
-		$template = $template + '
+		$template = $template . '
 		</ul>
 	</body>
 </html>
 		';
-
-		mail($user['email'], 'Daily task notification', $template);
+		if ($anytask) {
+			mail($user['email'], 'Daily task notification', $template);
+		}
 	}
 ?>
 
