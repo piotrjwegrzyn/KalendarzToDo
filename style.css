@@ -1,9 +1,14 @@
-html {
-    height: 100%;
+body {
+    min-height: 100vh;
+    background-image: linear-gradient(to bottom right, rgb(60, 60, 240) , rgb(180, 180, 240));
+    padding-bottom: 60px;
 }
 
-body {
-    background-image: linear-gradient(to bottom right, rgb(60, 60, 240) , rgb(180, 180, 240));
+footer {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
 }
 
 .footer-copyright span {
@@ -21,25 +26,25 @@ body {
 .header-nav {
     align-items: center;
     text-align: center;
-    margin-right: 1%;
-    margin-left: 1%;
     background-color: antiquewhite;
 }
 
 .nav-nav {
     margin-top: 10px;
     background-color: aliceblue;
-    padding: 2%;
+    padding: 10px;
     border-radius: 10px;
 }
 
 .element-nav {
-    padding: 1%;
     border-radius: 10px;
+    margin: 10px;
 }
 
-.list-group-item-lepszy {
-    background-color: #0dcaf0;
+.element-show {
+    background-color: red;
+    padding: 1%;
+    border-radius: 10px;
     display: grid;
     grid-template-areas: "name name" "begin_time edit_icon_button" "end_time delete_icon_button" "description description";
     grid-template-columns: 1fr 24px;
@@ -69,9 +74,11 @@ body {
 }
 
 .div-sign {
+    margin-top: -30px;
     background-color: aliceblue;
     padding: 5%;
     border-radius: 10px;
+    z-index: 1;
 }
 
 .div-sign h1 {

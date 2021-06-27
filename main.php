@@ -7,6 +7,39 @@ if (isset($_GET['unlink']) && $_GET['unlink']) {
     $stmt = $dbh->prepare("DELETE FROM links WHERE task_id = :task_id AND guest_id = :user_id");
     $stmt->execute([':task_id' => $_GET['unlink'], ':user_id' => $_SESSION['id']]);
 }
+
+$day_index = (date("w") -2) % 8;
+if ($day_index < 0)
+{
+    $day_index += 8;
+}
+if (!isset($_GET['week_offset'])) {
+    $_GET['week_offset'] = 0;
+    $_GET['day_index'] = $day_index;
+} elseif (!isset($_GET['day_index'])) {
+    $_GET['day_index'] = 0;
+}
+
+for ($i = 0; $i < 7; $i++){
+    $stmt = $dbh->prepare("SELECT id FROM tasks WHERE (
+        (user_id = :user_id OR id = (SELECT task_id FROM links WHERE guest_id = :user_id))
+        AND ((YEARWEEK(begin_time,1) = YEARWEEK(NOW(),1) + :week_offset
+                AND WEEKDAY(begin_time) = :day_index)
+            OR ((YEARWEEK(end_time,1) = YEARWEEK(NOW(),1) + :week_offset
+                AND WEEKDAY(end_time) = :day_index))))");
+    $stmt->execute([':user_id' => $_SESSION['id'], ':week_offset' => $_GET['week_offset'], ':day_index' => $i]);
+    if ($stmt->fetch(PDO::FETCH_ASSOC)) {
+        $busy_day[$i] = 1;
+    } else {
+        $busy_day[$i] = 0;
+    }
+
+$date[$i] = date('Y-m-d', strtotime($_GET['week_offset'].' week '.((-1)*$day_index+$i).' days'));
+
+}
+
+
+$today = date('Y-m-d');
 ?>
 
 <body>
@@ -54,92 +87,81 @@ if (isset($_GET['unlink']) && $_GET['unlink']) {
             <div class="list-group list-group-flush scrollarea nav-nav">
 
                 <!-- nagłówek nava -->
-                <div class="row element-nav header-nav" id="list-group">
-                    <a href="/week/<?php if (isset($_GET['week_offset'])) { print $_GET['week_offset'] - 1; } else { print -1; } ?>">
-                        <button type="button" class="btn col-md-2 button-nav">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                <div class="list-group-item lh-tight element-nav header-nav">
+                    <div class="row" id="list-group">
+                        <a href="/week/<?php print $_GET['week_offset'] - 1; ?>" class="btn col-2 button-nav">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" class="bi bi-arrow-left">
                                 <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"></path>
-                                </svg>
-                        </button>
-                    </a>
-
-                    <a href="/" class="d-flex link-dark text-xs-center text-decoration-none col-md-8">
-                        <span class="fs-5 fw-semibold">Week list</span>
-                    </a>
-                    <a href="/week/<?php if (isset($_GET['week_offset'])) { print $_GET['week_offset'] + 1; } else { print 1; } ?>">
-                        <button type="button" class="btn col-md-2 button-nav">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"></path>
                             </svg>
-                        </button>
-                    </a>
+                        </a>
 
+                        <a href="/" class="link-dark text-xs-center text-decoration-none col-8 fs-5 fw-semibold">
+                            WEEK <?php if ($_GET['week_offset']) { print ": "; if ($_GET['week_offset'] > 0) { print "+"; } print $_GET['week_offset']; } ?>
+                        </a>
+
+                        <a href="/week/<?php print $_GET['week_offset'] + 1; ?>" class= "btn col-2 button-nav">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" class="bi bi-arrow-right">
+                                <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"></path>
+                            </svg>
+                        </a>
+                    </div>
                 </div> <!-- koniec nagłówka nava -->
 
+                <a href="/week/<?php print $_GET['week_offset']; ?>/day/0" class="list-group-item active py-3 lh-tight element-nav" aria-current="true">
+                    <div class="d-flex w-100 align-items-center justify-content-between">
+                        <strong class="mb-1"></strong>
+                        <small>MONDAY</small>
+                    </div>
+                    <div class="col-10 mb-1 small"><?php print $date[0]; if ($date[0] == $today) print "----TODAY----"; ?>: This day is <?php if ($busy_day[0]) print "<b>NAUKA</b>"; else print "HARNAŚ"; ?> day</div>
+                </a>
 
-                <div class="element-nav">
-                    <a href="/week/<?php if (isset($_GET['week_offset'])) { print $_GET['week_offset']; } else { print 0; } ?>/day/0" class="list-group-item list-group-item-action active py-3 lh-tight" aria-current="true">
-                        <div class="d-flex w-100 align-items-center justify-content-between">
-                            <strong class="mb-1"></strong>
-                            <small>MONDAY</small>
-                        </div>
-                        <div class="col-10 mb-1 small">This day is busy</div>
-                    </a>
-                </div>
-                <div class="element-nav">
-                    <a href="/week/<?php if (isset($_GET['week_offset'])) { print $_GET['week_offset']; } else { print 0; } ?>/day/1" class="list-group-item list-group-item-action active py-3 lh-tight" aria-current="true">
-                        <div class="d-flex w-100 align-items-center justify-content-between">
-                            <strong class="mb-1"></strong>
-                            <small>TUESDAY</small>
-                        </div>
-                        <div class="col-10 mb-1 small">This day is busy</div>
-                    </a>
-                </div>
-                <div class="element-nav">
-                    <a href="/week/<?php if (isset($_GET['week_offset'])) { print $_GET['week_offset']; } else { print 0; } ?>/day/2" class="list-group-item list-group-item-action active py-3 lh-tight" aria-current="true">
-                        <div class="d-flex w-100 align-items-center justify-content-between">
-                            <strong class="mb-1"></strong>
-                            <small>WEDNSDAY</small>
-                        </div>
-                        <div class="col-10 mb-1 small">This day is busy</div>
-                    </a>
-                </div>
-                <div class="element-nav">
-                    <a href="/week/<?php if (isset($_GET['week_offset'])) { print $_GET['week_offset']; } else { print 0; } ?>/day/3" class="list-group-item list-group-item-action active py-3 lh-tight" aria-current="true">
-                        <div class="d-flex w-100 align-items-center justify-content-between">
-                            <strong class="mb-1"></strong>
-                            <small>THURSDAY</small>
-                        </div>
-                        <div class="col-10 mb-1 small">This day is busy</div>
-                    </a>
-                </div>
-                <div class="element-nav">
-                    <a href="/week/<?php if (isset($_GET['week_offset'])) { print $_GET['week_offset']; } else { print 0; } ?>/day/4" class="list-group-item list-group-item-action active py-3 lh-tight" aria-current="true">
-                        <div class="d-flex w-100 align-items-center justify-content-between">
-                            <strong class="mb-1"></strong>
-                            <small>FRIDAY</small>
-                        </div>
-                        <div class="col-10 mb-1 small">This day is busy</div>
-                    </a>
-                </div>
-                <div class="element-nav">
-                    <a href="/week/<?php if (isset($_GET['week_offset'])) { print $_GET['week_offset']; } else { print 0; } ?>/day/5" class="list-group-item list-group-item-action active py-3 lh-tight" aria-current="true">
-                        <div class="d-flex w-100 align-items-center justify-content-between">
-                            <strong class="mb-1"></strong>
-                            <small>SATURDAY</small>
-                        </div>
-                        <div class="col-10 mb-1 small">This day is busy</div>
-                    </a>
-                </div>
-                <div class="element-nav">
-                    <a href="/week/<?php if (isset($_GET['week_offset'])) { print $_GET['week_offset']; } else { print 0; } ?>/day/6" class="list-group-item list-group-item-action active py-3 lh-tight" aria-current="true">
-                        <div class="d-flex w-100 align-items-center justify-content-between">
-                            <strong class="mb-1"></strong>
-                            <small>SUNDAY</small>
-                        </div>
-                        <div class="col-10 mb-1 small">This day is busy</div>
-                    </a>
-                </div>
+                <a href="/week/<?php print $_GET['week_offset']; ?>/day/1" class="list-group-item active py-3 lh-tight element-nav" aria-current="true">
+                    <div class="d-flex w-100 align-items-center justify-content-between">
+                        <strong class="mb-1"></strong>
+                        <small>TUESDAY</small>
+                    </div>
+                    <div class="col-10 mb-1 small"><?php print $date[1]; if ($date[1] == $today) print "----TODAY----"; ?>: This day is <?php if ($busy_day[1]) print "<b>NAUKA</b>"; else print "HARNAŚ"; ?> day</div>
+                </a>
+
+                <a href="/week/<?php print $_GET['week_offset']; ?>/day/2" class="list-group-item active py-3 lh-tight element-nav" aria-current="true">
+                    <div class="d-flex w-100 align-items-center justify-content-between">
+                        <strong class="mb-1"></strong>
+                        <small>WEDNSDAY</small>
+                    </div>
+                    <div class="col-10 mb-1 small"><?php print $date[2]; if ($date[2] == $today) print "----TODAY----"; ?>: This day is <?php if ($busy_day[2]) print "<b>NAUKA</b>"; else print "HARNAŚ"; ?> day</div>
+                </a>
+
+                <a href="/week/<?php print $_GET['week_offset']; ?>/day/3" class="list-group-item active py-3 lh-tight element-nav" aria-current="true">
+                    <div class="d-flex w-100 align-items-center justify-content-between">
+                        <strong class="mb-1"></strong>
+                        <small>THURSDAY</small>
+                    </div>
+                    <div class="col-10 mb-1 small"><?php print $date[3]; if ($date[3] == $today) print "----TODAY----"; ?>: This day is <?php if ($busy_day[3]) print "<b>NAUKA</b>"; else print "HARNAŚ"; ?> day</div>
+                </a>
+
+                <a href="/week/<?php print $_GET['week_offset']; ?>/day/4" class="list-group-item active py-3 lh-tight element-nav" aria-current="true">
+                    <div class="d-flex w-100 align-items-center justify-content-between">
+                        <strong class="mb-1"></strong>
+                        <small>FRIDAY</small>
+                    </div>
+                    <div class="col-10 mb-1 small"><?php print $date[4]; if ($date[4] == $today) print "----TODAY----"; ?>: This day is <?php if ($busy_day[4]) print "<b>NAUKA</b>"; else print "HARNAŚ"; ?> day</div>
+                </a>
+
+                <a href="/week/<?php print $_GET['week_offset']; ?>/day/5" class="list-group-item active py-3 lh-tight element-nav" aria-current="true">
+                    <div class="d-flex w-100 align-items-center justify-content-between">
+                        <strong class="mb-1"></strong>
+                        <small>SATURDAY</small>
+                    </div>
+                    <div class="col-10 mb-1 small"><?php print $date[5]; if ($date[5] == $today) print "----TODAY----"; ?>: This day is <?php if ($busy_day[5]) print "<b>NAUKA</b>"; else print "HARNAŚ"; ?> day</div>
+                </a>
+
+                <a href="/week/<?php print $_GET['week_offset']; ?>/day/6" class="list-group-item active py-3 lh-tigh element-nav" aria-current="true">
+                    <div class="d-flex w-100 align-items-center justify-content-between">
+                        <strong class="mb-1"></strong>
+                        <small>SUNDAY</small>
+                    </div>
+                    <div class="col-10 mb-1 small"><?php print $date[6]; if ($date[6] == $today) print "----TODAY----"; ?>: This day is <?php if ($busy_day[6]) print "<b>NAUKA</b>"; else print "HARNAŚ"; ?> day</div>
+                </a>
 
             </div> <!-- to kończy się lista elementów nava -->
 
@@ -148,30 +170,19 @@ if (isset($_GET['unlink']) && $_GET['unlink']) {
 
         <!-- tu zaczyna się ta szeroka lista z prawej strony -->
 
-        <div class="col-md-8">
-            <ul class="list-group list-group-flush nav-nav">
-                <li class="list-group-item">
+        <div class="col-md-8" style="z-index: 1;">
+
+            <div class="list-group list-group-flush scrollarea nav-nav">
 <?php
     $allowed_pages = ['edit', 'create', 'show'];
 
     if (isset($_GET['page']) && in_array($_GET['page'], $allowed_pages)) {
         include($_GET['page'] . '.php');
-    } elseif (!isset($_GET['week_offset'])) {
-        $_GET['week_offset'] = 0;
-        $day_index = (date("w") -2) % 8;
-        if ($day_index < 0)
-        {
-            $day_index += 8;
-        }
-        $_GET['day_index'] = $day_index;
-        include('show.php');
     } else {
-        $_GET['day_index'] = 0;
+        include('show.php');
     }
-
 ?>
-                </li>
-            </ul>
+            </div>
         </div>
     </div>
 </main>

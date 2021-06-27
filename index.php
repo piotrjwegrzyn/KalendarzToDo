@@ -51,10 +51,8 @@
     }
 ?>
 
-<footer class="page-footer font-small blue fixed-bottom">
-    <div class="footer-copyright text-center py-3">
-        <span>Błaszczyna © Kwak © Węgrzyn</span>
-    </div>
+<footer class="page-footer font-small footer-copyright text-center py-3">
+    <span>Błaszczyna © Kwak © Węgrzyn</span>
 </footer>
 
 <!-- nasz własny Javascript -->

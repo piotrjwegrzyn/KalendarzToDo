@@ -6,13 +6,17 @@ $stmt = $dbh->prepare("SELECT * FROM tasks WHERE (
    (user_id = :user_id OR id = (SELECT task_id FROM links WHERE guest_id = :user_id))
    AND ((YEARWEEK(begin_time,1) = YEARWEEK(NOW(),1) + :week_offset
 		   AND WEEKDAY(begin_time) = :day_index)
-	   OR ((YEARWEEK(end_time,1) + :week_offset) = YEARWEEK(NOW(),1)
+	   OR ((YEARWEEK(end_time,1) = YEARWEEK(NOW(),1) + :week_offset)
 		   AND WEEKDAY(end_time) = :day_index))
 ) ORDER BY begin_time ASC");
 $stmt->execute([':user_id' => $_SESSION['id'], ':week_offset' => $_GET['week_offset'], ':day_index' => $_GET['day_index']]);
+
+// print $_GET['week_offset'].'</br>'.$_GET['day_index'];
+
 while ($task = $stmt->fetch(PDO::FETCH_ASSOC)) {
 	print '
-<div class="list-group-item-lepszy" id="user_id">
+<div class="element-show" id="user_id">
+
 	<h5 class="name" style="grid-area: name">'.$task['name'].'</h5>
 	<h6 class="begin_time" style="grid-area: begin_time">Godzina od: '.$task['begin_time'].'</h6>
 		';
