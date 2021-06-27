@@ -46,11 +46,30 @@ footer {
 }
 
 .element-show {
+    background-color: lightsalmon;
+    border-radius: 10px;
+    margin: 5px;
+}
+
+.title-show {
+    align-items: center;
+    text-align: center;
+    border-radius: 10px;
+    margin: 5px;
+}
+
+.button-show {
+    border: firebrick;
+    border-style: solid;
+    border-radius: 20px;
+}
+
+.button-delete {
     background-color: red;
-    padding: 1%;
-    display: grid;
-    grid-template-areas: "name name" "begin_time edit_icon_button" "end_time delete_icon_button" "description description";
-    grid-template-columns: 1fr 24px;
+}
+
+.button-edit {
+    background-color: fuchsia;
 }
 
 .list-group-item-lepszy-description h6 {
