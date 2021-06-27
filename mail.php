@@ -13,9 +13,6 @@
 	require 'PHPMailer/PHPMailer.php';
 	require 'PHPMailer/SMTP.php';
 
-	$stmt_task = $stmt;
-	$stmt_checkbox = $stmt;
-
 	$stmt = $dbh->prepare("SELECT * FROM users");
 	$stmt->execute();
 	while ($user = $stmt->fetch(PDO::FETCH_ASSOC)) {
