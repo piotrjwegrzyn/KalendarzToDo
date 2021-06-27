@@ -9,11 +9,12 @@ if (isset($_GET['unlink']) && $_GET['unlink']) {
 }
 
 $day_index = (date("w") -1) % 8;
+
 if ($day_index < 0)
 {
     $day_index += 7;
 }
-print $day_index;
+
 if (!isset($_GET['week_offset'])) {
     $_GET['week_offset'] = 0;
     $_GET['day_index'] = $day_index;
