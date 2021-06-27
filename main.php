@@ -87,7 +87,7 @@ $today = date('Y-m-d');
             <div class="list-group list-group-flush scrollarea nav-nav">
 
                 <!-- nagłówek nava -->
-                <div class="list-group-item lh-tight element-nav header-nav">
+                <div class="list-group-item lh-tight header-nav ">
                     <div class="row" id="list-group">
                         <a href="/week/<?php print $_GET['week_offset'] - 1; ?>" class="btn col-2 button-nav">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" class="bi bi-arrow-left">
@@ -107,7 +107,7 @@ $today = date('Y-m-d');
                     </div>
                 </div> <!-- koniec nagłówka nava -->
 
-                <a href="/week/<?php print $_GET['week_offset']; ?>/day/0" class="list-group-item active py-3 lh-tight element-nav" aria-current="true">
+                <a href="/week/<?php print $_GET['week_offset']; ?>/day/0" class="list-group-item py-3 lh-tight element-nav" aria-current="true">
                     <div class="d-flex w-100 align-items-center justify-content-between">
                         <strong class="mb-1"></strong>
                         <small>MONDAY</small>
@@ -115,7 +115,7 @@ $today = date('Y-m-d');
                     <div class="col-10 mb-1 small"><?php print $date[0]; if ($date[0] == $today) print "----TODAY----"; ?>: This day is <?php if ($busy_day[0]) print "<b>NAUKA</b>"; else print "HARNAŚ"; ?> day</div>
                 </a>
 
-                <a href="/week/<?php print $_GET['week_offset']; ?>/day/1" class="list-group-item active py-3 lh-tight element-nav" aria-current="true">
+                <a href="/week/<?php print $_GET['week_offset']; ?>/day/1" class="list-group-item py-3 lh-tight element-nav" aria-current="true">
                     <div class="d-flex w-100 align-items-center justify-content-between">
                         <strong class="mb-1"></strong>
                         <small>TUESDAY</small>
@@ -123,7 +123,7 @@ $today = date('Y-m-d');
                     <div class="col-10 mb-1 small"><?php print $date[1]; if ($date[1] == $today) print "----TODAY----"; ?>: This day is <?php if ($busy_day[1]) print "<b>NAUKA</b>"; else print "HARNAŚ"; ?> day</div>
                 </a>
 
-                <a href="/week/<?php print $_GET['week_offset']; ?>/day/2" class="list-group-item active py-3 lh-tight element-nav" aria-current="true">
+                <a href="/week/<?php print $_GET['week_offset']; ?>/day/2" class="list-group-item py-3 lh-tight element-nav" aria-current="true">
                     <div class="d-flex w-100 align-items-center justify-content-between">
                         <strong class="mb-1"></strong>
                         <small>WEDNSDAY</small>
@@ -131,7 +131,7 @@ $today = date('Y-m-d');
                     <div class="col-10 mb-1 small"><?php print $date[2]; if ($date[2] == $today) print "----TODAY----"; ?>: This day is <?php if ($busy_day[2]) print "<b>NAUKA</b>"; else print "HARNAŚ"; ?> day</div>
                 </a>
 
-                <a href="/week/<?php print $_GET['week_offset']; ?>/day/3" class="list-group-item active py-3 lh-tight element-nav" aria-current="true">
+                <a href="/week/<?php print $_GET['week_offset']; ?>/day/3" class="list-group-item py-3 lh-tight element-nav" aria-current="true">
                     <div class="d-flex w-100 align-items-center justify-content-between">
                         <strong class="mb-1"></strong>
                         <small>THURSDAY</small>
@@ -139,7 +139,7 @@ $today = date('Y-m-d');
                     <div class="col-10 mb-1 small"><?php print $date[3]; if ($date[3] == $today) print "----TODAY----"; ?>: This day is <?php if ($busy_day[3]) print "<b>NAUKA</b>"; else print "HARNAŚ"; ?> day</div>
                 </a>
 
-                <a href="/week/<?php print $_GET['week_offset']; ?>/day/4" class="list-group-item active py-3 lh-tight element-nav" aria-current="true">
+                <a href="/week/<?php print $_GET['week_offset']; ?>/day/4" class="list-group-item py-3 lh-tight element-nav" aria-current="true">
                     <div class="d-flex w-100 align-items-center justify-content-between">
                         <strong class="mb-1"></strong>
                         <small>FRIDAY</small>
@@ -147,7 +147,7 @@ $today = date('Y-m-d');
                     <div class="col-10 mb-1 small"><?php print $date[4]; if ($date[4] == $today) print "----TODAY----"; ?>: This day is <?php if ($busy_day[4]) print "<b>NAUKA</b>"; else print "HARNAŚ"; ?> day</div>
                 </a>
 
-                <a href="/week/<?php print $_GET['week_offset']; ?>/day/5" class="list-group-item active py-3 lh-tight element-nav" aria-current="true">
+                <a href="/week/<?php print $_GET['week_offset']; ?>/day/5" class="list-group-item py-3 lh-tight element-nav" aria-current="true">
                     <div class="d-flex w-100 align-items-center justify-content-between">
                         <strong class="mb-1"></strong>
                         <small>SATURDAY</small>
@@ -155,7 +155,7 @@ $today = date('Y-m-d');
                     <div class="col-10 mb-1 small"><?php print $date[5]; if ($date[5] == $today) print "----TODAY----"; ?>: This day is <?php if ($busy_day[5]) print "<b>NAUKA</b>"; else print "HARNAŚ"; ?> day</div>
                 </a>
 
-                <a href="/week/<?php print $_GET['week_offset']; ?>/day/6" class="list-group-item active py-3 lh-tigh element-nav" aria-current="true">
+                <a href="/week/<?php print $_GET['week_offset']; ?>/day/6" class="list-group-item py-3 lh-tight element-nav" aria-current="true">
                     <div class="d-flex w-100 align-items-center justify-content-between">
                         <strong class="mb-1"></strong>
                         <small>SUNDAY</small>

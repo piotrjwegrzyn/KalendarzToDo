@@ -9,6 +9,7 @@
     include("config.inc.php");
     include("functions.inc.php");
 
+    require __DIR__ . '/vendor/autoload.php';
 
     #--------------------WYLOGOWANIE--------------------
     if (isset($_GET['logout']) && $_GET['logout'] == 1) {
@@ -29,10 +30,12 @@
     <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/sign-in/">
     <!-- nasz własny CSS -->
     <link href="/style.css" rel="stylesheet">
-    
+
     <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico"/>
 
     <meta name="theme-color" content="#7952b3">
+
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
     <title>To Do Calendar</title>
 

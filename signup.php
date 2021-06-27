@@ -1,27 +1,33 @@
 <?php
-  if (!defined('IN_INDEX')) { exit("Nie można uruchomić tego pliku bezpośrednio."); }
+    if (!defined('IN_INDEX')) { exit("Nie można uruchomić tego pliku bezpośrednio."); }
 
-  # s119.labagh.pl?page=register
-  function register_user($post, $config, $server, $dbh) {
-  	if (!($_POST['email'] && $_POST['password'] && $_POST['password-retype']))
-  		return '<span style="font-weight: bold; color: red;">Uzupełnij wszystkie pola!</span>';
+    # s119.labagh.pl?page=register
+    function register_user($post, $config, $server, $dbh) {
+        $recaptcha = new \ReCaptcha\ReCaptcha($config['recaptcha_private']);
+        $resp = $recaptcha->setExpectedHostname('s119.labagh.pl')
+                              ->verify($post['g-recaptcha-response'], $server['REMOTE_ADDR']);
+        if (!$resp->isSuccess())
+          return '<span style="font-weight: bold; color: red;">Rozwiąż re-captcha!</span>	';
 
-  	if (!preg_match('/^[a-zA-Z0-9\-\_\.]+\@[a-zA-Z0-9\-\_\.]+\.[a-zA-Z]{2,5}$/D', $post['email']))
-  		return '<span style="font-weight: bold; color: red;">Podaj poprawny adres email!</span>';
+      	if (!($_POST['email'] && $_POST['password'] && $_POST['password-retype']))
+      		return '<span style="font-weight: bold; color: red;">Uzupełnij wszystkie pola!</span>';
 
-  	if ($post['password'] != $post['password-retype'])
-  		return '<span style="font-weight: bold; color: red;">Podane hasła się różnią!</span>';
+      	if (!preg_match('/^[a-zA-Z0-9\-\_\.]+\@[a-zA-Z0-9\-\_\.]+\.[a-zA-Z]{2,5}$/D', $post['email']))
+      		return '<span style="font-weight: bold; color: red;">Podaj poprawny adres email!</span>';
 
-  	try {
-  		$hash = password_hash($post['password'], PASSWORD_DEFAULT);
-  		$stmt = $dbh->prepare('INSERT INTO users (id, email, password, created) VALUES (null, :email, :password, NOW())');
-  		$stmt->execute([':email' => $post['email'], ':password' => $hash]);
+      	if ($post['password'] != $post['password-retype'])
+      		return '<span style="font-weight: bold; color: red;">Podane hasła się różnią!</span>';
 
-  		return '<span style="font-weight: bold; color: green;">Zarejestrowano użytkownika '.$post['email'].' :))</span>';
-  	} catch (PDOException $e) {
-  		return '<span style="font-weight: bold; color: red;">Podany email jest zajęty!</span>';
-  	}
-  }
+      	try {
+      		$hash = password_hash($post['password'], PASSWORD_DEFAULT);
+      		$stmt = $dbh->prepare('INSERT INTO users (id, email, password, created) VALUES (null, :email, :password, NOW())');
+      		$stmt->execute([':email' => $post['email'], ':password' => $hash]);
+
+      		return '<span style="font-weight: bold; color: green;">Zarejestrowano użytkownika '.$post['email'].' :))</span>';
+      	} catch (PDOException $e) {
+      		return '<span style="font-weight: bold; color: red;">Podany email jest zajęty!</span>';
+      	}
+     }
 ?>
 
 <body class="body-sign">
@@ -46,6 +52,10 @@
         <label for="floatingRetype">Retype Password</label>
       </div>
 
+      <div class="form-floating">
+          <div class='g-recaptcha' data-sitekey="<?php print $config['recaptcha_public']; ?>" data-size="compact"></div>
+      </div>
+
       <!-- <button class="w-100 btn btn-lg btn-primary" type="button">Sign up</button> -->
       <input class="w-100 btn btn-lg btn-primary button-sign" type="submit" value="Sign up">
     </form>
@@ -53,10 +63,8 @@
   </div>
 
 <?php
-
-  if (isset($_POST['email'], $_POST['password'], $_POST['password-retype'])) {
-
-  	print register_user($_POST, $config, $_SERVER, $dbh);
-  }
+    if (isset($_POST['email'], $_POST['password'], $_POST['password-retype'])) {
+    	print register_user($_POST, $config, $_SERVER, $dbh);
+    }
 ?>
 </main>

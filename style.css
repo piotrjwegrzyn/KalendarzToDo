@@ -6,6 +6,7 @@ body {
 
 footer {
     position: fixed;
+    z-index: 1;
     bottom: 0;
     right: 0;
     left: 0;
@@ -27,6 +28,8 @@ footer {
     align-items: center;
     text-align: center;
     background-color: antiquewhite;
+    border-radius: 10px;
+    margin: 5px;
 }
 
 .nav-nav {
@@ -37,14 +40,14 @@ footer {
 }
 
 .element-nav {
+    background-color: lightskyblue;
     border-radius: 10px;
-    margin: 10px;
+    margin: 5px;
 }
 
 .element-show {
     background-color: red;
     padding: 1%;
-    border-radius: 10px;
     display: grid;
     grid-template-areas: "name name" "begin_time edit_icon_button" "end_time delete_icon_button" "description description";
     grid-template-columns: 1fr 24px;
@@ -78,7 +81,6 @@ footer {
     background-color: aliceblue;
     padding: 5%;
     border-radius: 10px;
-    z-index: 1;
 }
 
 .div-sign h1 {
