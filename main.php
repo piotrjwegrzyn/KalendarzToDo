@@ -156,7 +156,7 @@ if (isset($_GET['unlink']) && $_GET['unlink']) {
 
     if (isset($_GET['page']) && in_array($_GET['page'], $allowed_pages)) {
         include($_GET['page'] . '.php');
-    } else {
+    } elseif (!isset($_GET['week_offset'])) {
         $_GET['week_offset'] = 0;
         $day_index = (date("w") -2) % 8;
         if ($day_index < 0)
@@ -165,6 +165,8 @@ if (isset($_GET['unlink']) && $_GET['unlink']) {
         }
         $_GET['day_index'] = $day_index;
         include('show.php');
+    } else {
+        $_GET['day_index'] = 0;
     }
 
 ?>
