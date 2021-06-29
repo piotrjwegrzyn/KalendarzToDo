@@ -61,7 +61,7 @@
 			$stmt_checkbox->execute([':task_id' => $task['id']]);
 			while ($checkbox = $stmt_checkbox->fetch(PDO::FETCH_ASSOC)) {
 				$template = $template . '
-						<input type="checkbox" onclick="return false"';
+						<input type="checkbox" disabled="disabled"';
 
 				if ($checkbox['state'] == 1) {
 					$template = $template . ' checked="checked"';
