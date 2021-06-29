@@ -168,7 +168,7 @@ while ($task = $stmt->fetch(PDO::FETCH_ASSOC)) {
 		';
 }
 if ($harnas)
-	print '<p class="center-class"><img src="/harnas.png" width="250"></p>';
+	print '<p class="center-harnas"><img src="/harnas.png" width="250"></p>';
 ?>
 <script>
 	$(document).ready(function() {
