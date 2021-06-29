@@ -1,97 +1,152 @@
+<!-- plik show -->
 <?php
 if (!defined('IN_INDEX')) { exit("Nie można uruchomić tego pliku bezpośrednio."); }
 
 //--------------------WCZYTYWANIE-DNIA--------------------
-$stmt = $dbh->prepare("SELECT * FROM tasks WHERE (
-   (user_id = :user_id OR id = (SELECT task_id FROM links WHERE guest_id = :user_id))
-   AND ((YEARWEEK(begin_time,1) = YEARWEEK(NOW(),1) + :week_offset +1
-		   AND WEEKDAY(begin_time) = :day_index)
-	   OR (YEARWEEK(end_time,1) = YEARWEEK(NOW(),1) + :week_offset +1
-		   AND WEEKDAY(end_time) = :day_index)
-)) ORDER BY begin_time ASC");
-$stmt->execute([':user_id' => $_SESSION['id'], ':week_offset' => $_GET['week_offset'], ':day_index' => $_GET['day_index']]);
+$stmt = $dbh->prepare("SELECT * FROM tasks WHERE ((user_email = :user_email
+OR id = ANY (SELECT task_id FROM links WHERE guest_email = :user_email))
+AND ((((YEARWEEK(begin_time,1) = YEARWEEK(NOW(),1) + :week_offset)
+		 AND (WEEKDAY(begin_time) <= :day_index))
+	 OR (YEARWEEK(begin_time,1) < YEARWEEK(NOW(),1) + :week_offset))
+AND (((YEARWEEK(end_time,1) = YEARWEEK(NOW(),1) + :week_offset)
+		 AND (WEEKDAY(end_time) >= :day_index))
+	OR (YEARWEEK(end_time,1) > YEARWEEK(NOW(),1) + :week_offset)
+))) ORDER BY begin_time ASC");
+$stmt->execute([':user_email' => $_SESSION['email'], ':week_offset' => $_GET['week_offset'], ':day_index' => $_GET['day_index']]);
 
-// print $_GET['week_offset'].'</br>'.$_GET['day_index'];
-
+//print $_GET['week_offset'].'</br>'.$_GET['day_index'];
+$harnas = 1;
 while ($task = $stmt->fetch(PDO::FETCH_ASSOC)) {
+	$harnas = 0;
 	print '
 <div class="element-nav element-show" id="user_id">
-
-	<div class="row title-show">
-
+	<div class="row title-show py-3">
 		<!-- tytuł zadania -->
 		<div class="col-lg-8 col-12">
-
-			<h1 class="name">'.$task['name'].'</h1>
-
+			<h1 class="name white-font">'.$task['name'].'</h1>
 		</div>
-
 		<!-- przycisk edit -->
 		';
-	if ($task['user_id'] == $_SESSION['id']) { // full access
+	if ($task['user_email'] == $_SESSION['email']) { // full access
 		print '
+		<div class="col-lg-2 col-6 button_holder center-class">
 
-		<a href="/edit/' . $task['id'] . '" class="btn col-lg-2 col-6 button-show button-edit">
-		<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" class="bi bi-pencil">
-			<path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
-		</svg>
-		</a>';
+			<a href="/edit/' . $task['id'] . '" class="btn button-show button-edit">
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-pencil">
+					<path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+				</svg>
+				Edit
+			</a>
+		</div>';
 
 	}
 	print '
-
 		<!-- przycisk usuwania -->
-		';
-	if ($task['user_id'] == $_SESSION['id']) {
+		<div class="col-lg-2 col-6 button-holder center-class">
+			';
+		if ($task['user_email'] == $_SESSION['email']) {
+			print '
+			<a href="/edit/'.$task['id'].'/delete" class="btn button-show button-delete">
+
+			';
+		} else {
+			print '
+			<a href="/unlink/'.$task['id'].'" class="btn button-show button-delete">
+
+			';
+		}
 		print '
-		<a href="/edit/'.$task['id'].'/delete" class="btn col-lg-2 col-6 button-show button-delete">
-		';
-	} else {
-		print '
-		<a href="/unlink/'.$task['id'].'" class="btn col-lg-2 col-6 button-show button-delete">
-		';
-	}
-	print '
-			<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" class="bi bi-calendar-x">
-				<path d="M6.146 7.146a.5.5 0 0 1 .708 0L8 8.293l1.146-1.147a.5.5 0 1 1 .708.708L8.707 9l1.147 1.146a.5.5 0 0 1-.708.708L8 9.707l-1.146 1.147a.5.5 0 0 1-.708-.708L7.293 9 6.146 7.854a.5.5 0 0 1 0-.708z"/>
-				<path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
-			</svg>
-		</a>
-
-	</div>
-
-
-
-
-	<h6 class="begin_time" style="grid-area: begin_time">Godzina od: '.$task['begin_time'].'</h6>
-	<h6 class="end_time" style="grid-area: end_time">Godzina do: '.$task['end_time'].'</h6>
-	<div style="grid-area: delete_icon_button">
-	</div>
-	<div class="list-group-item-lepszy-description">
-		<h6>Description</h6>
-		<div class="list-group-item-lepszy-description-zawartosc" style="display: none">
-			'.$task['description'].'
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-x">
+					<path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+				</svg>
+				Delete
+			</a>
 		</div>
-	</div>';
-	if ($task['user_id'] == $_SESSION['id']) {
-		$stmt_copy = $dbh->prepare("SELECT email FROM users WHERE id = (SELECT guest_id FROM links WHERE task_id = :task_id)");
-		$stmt_copy->execute([':task_id' => $task['id']]);
-		while ($username = $stmt_copy->fetch(PDO::FETCH_ASSOC)) {
-			print '
-		<p> Gość: ' . $username['email'] . '</p>
+	</div>
+	<div class="row info-tasks-holder">
+
+		<!-- info -->
+		<div class="col-12 col-md-6 form-edit">
+
+			<div>
+
+				<div class="begin_time py-3 task-times" style="grid-area: begin_time">From: '.$task['begin_time'].'</div>
+				<div class="end_time py-3 task-times" style="grid-area: end_time">To: '.$task['end_time'].'</div>
+				<div class="list-group-item-lepszy-description">
+					<h6 class="task-texts">Description</h6>
+					<div class="list-group-item-lepszy-description-zawartosc" style="display: none">
+						'.$task['description'].'
+					</div>
+				</div>
+			
+			</div>
+			<div class="form-edit">
+				<h2 class="fw-normal">Contributors</h2>
+
+
+
+			</div>
+		</div>
+
+		<!-- tasks -->
+
+		<div class="col-12 col-md-6 form-edit">
+
+		<!-- lista tasków -->';
+		$stmt_2 = $dbh->prepare("SELECT * FROM checkboxes WHERE task_id = :task_id");
+	    $stmt_2->execute([':task_id' => $task['id']]);
+
+	    while ($checkbox = $stmt_2->fetch(PDO::FETCH_ASSOC)) {
+	        print '
+		<div class="form-floating">
+			<div class="row row-task-edit">
+				<div class="col-2 padding-button-edit">
+					<input class="form-check-input" type="checkbox" name="'.$task['id'].'" id="'.$checkbox['id'].'" ';
+			if ($checkbox['state']==1)
+				print 'checked';
+			print '>
+				</div>
+				<div class="col-10">
+					<input name="name[]" type="text" class="form-control name_list" value="'.$checkbox['name'].'" id="name" readonly="readonly">
+						<!--<label for="name"></label>-->
+				</div>
+			</div>
+		</div>
 			';
 		}
-	} else {
-		$stmt_copy = $dbh->prepare("SELECT email FROM users WHERE id = :user_id");
-		$stmt_copy->execute([':user_id' => $task['user_id']]);
-		$username = $stmt_copy->fetch(PDO::FETCH_ASSOC);
-		if ($username) {
-			print '
-		<p> Właściciel: ' . $username['email'] . '</p>
-			';
-		}
-	}
-	print '
-</div>
-	';
+		print '
+	</div>
+	</div>
+	</div>
+		';
 }
+if ($harnas)
+	print '<img src="/harnas.png" width="100">';
+?>
+<script>
+	$(document).ready(function() {
+		$('.form-check-input').click(function  () {
+			console.log((this.checked) ? 0 : 1);
+			$.ajax({
+				url: "/ajax-checkbox-change.php",
+				method: "POST",
+				data: {
+          			task_id : $(this).attr("name"),
+					user_email : "<?php print $_SESSION['email']; ?>",
+					checkbox_id : $(this).attr("id"),
+					state : this.checked ? 1 : 0
+				}
+			}).done(function(inn) {
+				var guzik = $(this);
+				console.log(inn);
+				if (inn == 'NOT OK') {
+					setTimeout(function() {
+				       	guzik.prop('checked', false);
+						console.log('chuj');
+				    }, 1000);
+				}
+			});
+		});
+	});
+</script>
+<!-- koniec pliku show -->

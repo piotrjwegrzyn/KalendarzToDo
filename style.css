@@ -20,14 +20,13 @@ footer {
 }
 
 .button-nav {
-    border-radius: 20px;
-    background-color: darkkhaki;
+    background-color: lightskyblue;
 }
 
 .header-nav {
     align-items: center;
     text-align: center;
-    background-color: antiquewhite;
+    background-color: rgb(13, 110, 253);
     border-radius: 10px;
     margin: 5px;
 }
@@ -46,7 +45,7 @@ footer {
 }
 
 .element-show {
-    background-color: lightsalmon;
+    background-color: lightskyblue;
     border-radius: 10px;
     margin: 5px;
 }
@@ -55,13 +54,28 @@ footer {
     align-items: center;
     text-align: center;
     border-radius: 10px;
+    background-color: rgb(13, 110, 253);;
     margin: 5px;
 }
 
 .button-show {
-    border: firebrick;
+    border: aliceblue;
     border-style: solid;
-    border-radius: 20px;
+    border-radius: 10px;
+}
+
+.info-tasks-holder {
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.task-times {
+    border-radius: 10px;
+    text-align: center;
+}
+
+.button-holder {
+    padding: 10px;
 }
 
 .button-delete {
@@ -69,30 +83,89 @@ footer {
 }
 
 .button-edit {
-    background-color: fuchsia;
+    background-color: mediumseagreen;
 }
 
-.list-group-item-lepszy-description h6 {
-    user-select: none;
+.header-edit {
+    border-radius: 10px;
+    margin: 5px;
+}
+.white-font {
+    color: aliceblue;
 }
 
-.list-group-item-lepszy-description {
-    grid-area: description;
-}
-
-.body-edit {
-    display: flex;
+.title-edit {
     align-items: center;
-    padding-top: 40px;
-    padding-bottom: 40px;
+    text-align: center;
+    background-color:  rgb(13, 110, 253);
+}
+
+.edit-edit {
+    margin-top: 10px;
+    background-color:lightskyblue;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.element-edit {
     background-color: aliceblue;
-  }
+}
+
+.row-task-edit {
+    align-items: center;
+    width: 100%;
+    margin-bottom: 10px;
+    float: none;
+}
+
+.table-edit {
+    background-color: black;
+}
+
+.padding-button-edit {
+    padding: 0;
+}
+
+input {
+    min-width: none;
+    width: auto;
+}
 
 .form-edit {
-  width: 100%;
-  max-width: 330px;
-  padding: 15px;
-  margin: auto;
+    text-align: center;
+    padding: 10px;
+}
+
+.form-edit .form-floating:focus-within {
+    z-index: 2;
+}
+
+.form-edit h2 {
+    margin-bottom: 15px;
+}
+
+.form-edit .first-element {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.form-edit .middle-element {
+    margin-bottom: -1px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.form-edit .last-element {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.center-class {
+    display:grid;
+    place-items:center
 }
 
 .div-sign {
@@ -146,3 +219,4 @@ footer {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
 }
+

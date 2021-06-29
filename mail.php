@@ -39,13 +39,13 @@
 
 		';
 		$stmt_task = $dbh->prepare("SELECT * FROM tasks WHERE (
-		    (user_id = :user_id OR id = (SELECT task_id FROM links WHERE guest_id = :user_id))
+		    (user_email = :user_email OR id = ANY (SELECT task_id FROM links WHERE guest_email = :user_email))
 		    AND ((YEARWEEK(begin_time) = YEARWEEK(NOW())
 		            AND WEEKDAY(begin_time) = WEEKDAY(NOW()))
 		        OR ((YEARWEEK(end_time) = YEARWEEK(NOW())
 			        AND WEEKDAY(end_time) = WEEKDAY(NOW()))))
 		) ORDER BY begin_time ASC");
-		$stmt_task->execute([':user_id' => $user['id']]);
+		$stmt_task->execute([':user_email' => $user['email']]);
 		while ($task = $stmt_task->fetch(PDO::FETCH_ASSOC)) {
 			$anytask = 1;
 			$template = $template . '

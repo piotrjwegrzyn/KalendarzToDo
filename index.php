@@ -17,7 +17,6 @@
 
     }
 ?>
-
 <!DOCTYPE html>
 <html lang="en" class="has-sticky-footer">
 <head>
@@ -36,11 +35,12 @@
     <meta name="theme-color" content="#7952b3">
 
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <title>To Do Calendar</title>
 
 </head>
-
+<!-- ładowanie poprzez include lvl 1 -->
 <?php
     #--------------------ŁADOWANIE-STRON--------------------
     $allowed_pages = ['signin', 'signup'];
@@ -53,7 +53,7 @@
         include('signin.php');
     }
 ?>
-
+<!-- koniec ładowania poprzez include lvl 1 -->
 <footer class="page-footer font-small footer-copyright text-center py-3">
     <span>Błaszczyna © Kwak © Węgrzyn</span>
 </footer>
@@ -73,6 +73,8 @@
 <!-- Bootstrap -->
 <!-- JavaScript Bundle with Popper -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+
 
 </body>
 
