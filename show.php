@@ -46,12 +46,12 @@ while ($task = $stmt->fetch(PDO::FETCH_ASSOC)) {
 			';
 		if ($task['user_email'] == $_SESSION['email']) {
 			print '
-			<a href="/edit/'.$task['id'].'/delete" class="btn button-show button-delete">
+			<a id="'.$task['id'].'" class="btn button-show button-delete" name="delete">
 
 			';
 		} else {
 			print '
-			<a href="/unlink/'.$task['id'].'" class="btn button-show button-delete">
+			<a id="'.$task['id'].'" class="btn button-show button-delete" name="unlink">
 
 			';
 		}
@@ -95,14 +95,32 @@ while ($task = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
 			</div>
 		';
-		print '
+		$stmt_2 = $dbh->prepare("SELECT id, guest_email FROM links WHERE task_id = :task_id");
+	    $stmt_2->execute([':task_id' => $task['id']]);
+		$any_contributor = 0;
+	    if ($link = $stmt_2->fetch(PDO::FETCH_ASSOC)) {
+			$any_contributor = 1;
+	        print '
 			<div class="form-edit contributors-list">
 				<h2 class="fw-normal">Other contributors</h2>
 				<div class="list-group list-group-flush scrollarea">
-					<input type="text" class="form-control name_list" value="Dupa" id="name" placeholder="Empty task" readonly="readonly">
-
+					<input type="text" class="form-control name_list" value="'.$link['guest_email'].'" id="name" readonly="readonly">
 				</div>
+			';
+	    }
+		while ($link = $stmt_2->fetch(PDO::FETCH_ASSOC)) {
+			print '
+				<div class="list-group list-group-flush scrollarea">
+					<input type="text" class="form-control name_list" value="'.$link['guest_email'].'" id="name" readonly="readonly">
+				</div>
+			';
+		}
+		if ($any_contributor){
+			print '
 			</div>
+			';
+		}
+		print '
 		</div>
 
 		<!-- tasks -->
@@ -114,7 +132,8 @@ while ($task = $stmt->fetch(PDO::FETCH_ASSOC)) {
 			<h2 class="fw-normal">Tasks for this event</h2>
 
 
-		<!-- lista tasków -->';
+		<!-- lista tasków -->
+		';
 		$stmt_2 = $dbh->prepare("SELECT * FROM checkboxes WHERE task_id = :task_id");
 	    $stmt_2->execute([':task_id' => $task['id']]);
 
@@ -149,7 +168,6 @@ if ($harnas)
 <script>
 	$(document).ready(function() {
 		$('.form-check-input').click(function  () {
-			console.log((this.checked) ? 0 : 1);
 			$.ajax({
 				url: "/ajax-checkbox-change.php",
 				method: "POST",
@@ -169,6 +187,17 @@ if ($harnas)
 				    }, 1000);
 				}
 			});
+		});
+		$('.button-delete').click(function  () {
+			console.log('dupa');
+			var result = confirm("Want to " + $(this).attr("name") + "?");
+			if (result) {
+				if ($(this).attr("name") == 'delete') {
+			    	window.location.replace("/edit/" + $(this).attr("id") + "/delete");
+				} else {
+					window.location.replace("/unlink/" + $(this).attr("id"));
+				}
+			}
 		});
 	});
 </script>

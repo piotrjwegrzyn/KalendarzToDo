@@ -219,15 +219,19 @@ if (isset($_GET['id'], $_GET['delete'])) {
 				method: "POST",
 				data: {
           			task_id : <?php print $task['id']; ?>,
-					user_email : "<?php print $_SESSION['email']; ?>",
 					content_description : content_name
 				}
 			}).done(function(inn) {
+                console.log(inn);
 				if (inn != 'NOT OK') {
 					add_new_task_to_list(content_name, inn);
 					document.getElementById("new_task_entry").value = '';
-				}
-			});
+				} else {
+                    alert("Something went wrong...");
+                }
+			}).fail(function() {
+                alert("Something went wrong...");
+            });
 		});
 
 		$(document).on('click', '.btn-remove', function () {
@@ -237,14 +241,17 @@ if (isset($_GET['id'], $_GET['delete'])) {
 				method: "POST",
 				data: {
           			task_id : <?php print $task['id']; ?>,
-					user_email : "<?php print $_SESSION['email']; ?>",
 					checkbox_id : $(this).attr("id")
 				}
 			}).done(function(ouu) {
 				if(ouu != 'NOT OK') {
 					$('#row_task' + button_id + '').remove();
-				}
-			});
+				} else {
+                    alert("Something went wrong...");
+                }
+			}).fail(function() {
+                alert("Something went wrong...");
+            });
 
 		});
 	});
@@ -258,15 +265,18 @@ if (isset($_GET['id'], $_GET['delete'])) {
 				method: "POST",
 				data: {
           			task_id : <?php print $_GET['id']; ?>,
-					user_email : "<?php print $_SESSION['email']; ?>",
 					guest_email : content_name
 				}
 			}).done(function(inn) {
 				if (inn != 'NOT OK') {
 					add_new_contributor_to_list(content_name, inn);
 					document.getElementById("new_contributor_entry").value = '';
-				}
-			});
+				} else {
+                    alert("No such user found!");
+                }
+			}).fail(function() {
+                alert("Something went wrong...");
+            });
 		});
 
 		$(document).on('click', '.btn-remove-contributor', function () {
@@ -276,14 +286,17 @@ if (isset($_GET['id'], $_GET['delete'])) {
 				method: "POST",
 				data: {
           			task_id : <?php print $_GET['id']; ?>,
-					user_email : "<?php print $_SESSION['email']; ?>",
 					link_id : $(this).attr("id")
 				}
 			}).done(function(ouu) {
 				if(ouu != 'NOT OK') {
 					$('#row_contributor' + button_id + '').remove();
-				}
-			});
+				} else {
+                    alert("Something went wrong...");
+                }
+			}).fail(function() {
+                alert("Something went wrong...");
+            });
 		});
 	});
 

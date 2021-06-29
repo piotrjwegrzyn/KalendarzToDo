@@ -10,7 +10,7 @@ if (!defined('IN_INDEX')) { exit("Nie można uruchomić tego pliku bezpośrednio
 
 			<div class="row">
 
-				<span class="link-dark text-xs-center text-decoration-none col-10 fs-1 fw-semibold center-class white-font">
+				<span class="text-xs-center text-decoration-none col-10 fs-1 fw-semibold center-class white-font">
 					<span>Add new event</span>
 				</span>
 
