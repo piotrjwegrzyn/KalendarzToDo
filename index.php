@@ -58,18 +58,6 @@
     <span>Błaszczyna © Kwak © Węgrzyn</span>
 </footer>
 
-<!-- nasz własny Javascript -->
-<script>
-
-    for (const element of document.getElementsByClassName('list-group-item-lepszy-description')) {
-        const content = element.getElementsByClassName("list-group-item-lepszy-description-zawartosc")[0]
-        element.onclick = () => {
-            content.style.display = content.style.display === 'none' ? 'block' : 'none'
-        }
-    }
-
-</script>
-
 <!-- Bootstrap -->
 <!-- JavaScript Bundle with Popper -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>

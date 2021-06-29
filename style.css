@@ -45,7 +45,7 @@ footer {
 }
 
 .element-show {
-    background-color: lightskyblue;
+    background-color: aquamarine;
     border-radius: 10px;
     margin: 5px;
 }
@@ -72,6 +72,12 @@ footer {
 .task-times {
     border-radius: 10px;
     text-align: center;
+}
+
+.contributors-list {
+    border-radius: 10px;
+    background-color: lightskyblue;
+    margin-bottom: 10px;
 }
 
 .button-holder {

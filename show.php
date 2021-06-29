@@ -66,31 +66,53 @@ while ($task = $stmt->fetch(PDO::FETCH_ASSOC)) {
 	<div class="row info-tasks-holder">
 
 		<!-- info -->
-		<div class="col-12 col-md-6 form-edit">
+		<div class="col-12 col-md-6">
 
-			<div>
+			<div class="form-edit contributors-list">
+				<h2 class="fw-normal">Information</h2>
+				<h5>Dates and times</h5>
+				<div class="row">
 
-				<div class="begin_time py-3 task-times" style="grid-area: begin_time">From: '.$task['begin_time'].'</div>
-				<div class="end_time py-3 task-times" style="grid-area: end_time">To: '.$task['end_time'].'</div>
-				<div class="list-group-item-lepszy-description">
-					<h6 class="task-texts">Description</h6>
-					<div class="list-group-item-lepszy-description-zawartosc" style="display: none">
-						'.$task['description'].'
-					</div>
+				<div class="col-12 col-md-6 begin_time py-3 task-times">
+					Start date:
+					<br />
+					'.$task['begin_time'].'
 				</div>
-			
+
+				<div class="col-12 col-md-6 end_time py-3 task-times">
+					End date:
+					<br />
+					'.$task['end_time'].'
+				</div>
+				</div>
+
+
+
+				<div>
+					<h5>Description</h5>
+						'.$task['description'].'
+				</div>
+
 			</div>
-			<div class="form-edit">
-				<h2 class="fw-normal">Contributors</h2>
+		';
+		print '
+			<div class="form-edit contributors-list">
+				<h2 class="fw-normal">Other contributors</h2>
+				<div class="list-group list-group-flush scrollarea">
+					<input type="text" class="form-control name_list" value="Dupa" id="name" placeholder="Empty task" readonly="readonly">
 
-
-
+				</div>
 			</div>
 		</div>
 
 		<!-- tasks -->
 
-		<div class="col-12 col-md-6 form-edit">
+		<div class="col-12 col-md-6">
+
+			<div class="form-edit contributors-list">
+
+			<h2 class="fw-normal">Tasks for this event</h2>
+
 
 		<!-- lista tasków -->';
 		$stmt_2 = $dbh->prepare("SELECT * FROM checkboxes WHERE task_id = :task_id");
@@ -115,6 +137,7 @@ while ($task = $stmt->fetch(PDO::FETCH_ASSOC)) {
 			';
 		}
 		print '
+		</div>
 	</div>
 	</div>
 	</div>
