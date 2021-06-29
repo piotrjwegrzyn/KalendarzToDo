@@ -47,19 +47,19 @@ while ($task = $stmt->fetch(PDO::FETCH_ASSOC)) {
 		if ($task['user_email'] == $_SESSION['email']) {
 			print '
 			<a id="'.$task['id'].'" class="btn button-show button-delete" name="delete">
-
-			';
-		} else {
-			print '
-			<a id="'.$task['id'].'" class="btn button-show button-delete" name="unlink">
-
-			';
-		}
-		print '
 				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-x">
 					<path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
 				</svg>
-				Delete
+				Delete';
+		} else {
+			print '
+			<a id="'.$task['id'].'" class="btn button-show button-delete" name="unlink">
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-x">
+					<path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+				</svg>
+				Unlink';
+		}		
+		print'
 			</a>
 		</div>
 	</div>
@@ -95,23 +95,28 @@ while ($task = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
 			</div>
 		';
-		$stmt_2 = $dbh->prepare("SELECT id, guest_email FROM links WHERE task_id = :task_id");
+		$stmt_2 = $dbh->prepare("SELECT user_email FROM tasks WHERE id = :task_id UNION SELECT guest_email FROM links WHERE task_id = :task_id");
 	    $stmt_2->execute([':task_id' => $task['id']]);
 		$any_contributor = 0;
-	    if ($link = $stmt_2->fetch(PDO::FETCH_ASSOC)) {
+		$link[0] = $stmt_2->fetch(PDO::FETCH_ASSOC); // owner
+		$link[1] = $stmt_2->fetch(PDO::FETCH_ASSOC);
+	    if ($link[1]) {
 			$any_contributor = 1;
 	        print '
 			<div class="form-edit contributors-list">
 				<h2 class="fw-normal">Other contributors</h2>
 				<div class="list-group list-group-flush scrollarea">
-					<input type="text" class="form-control name_list" value="'.$link['guest_email'].'" id="name" readonly="readonly">
+					<input type="text" class="form-control name_list" value="'.$link[0]['user_email'].' - Owner" id="name" readonly="readonly">
+				</div>
+				<div class="list-group list-group-flush scrollarea">
+					<input type="text" class="form-control name_list" value="'.$link[1]['user_email'].'" id="name" readonly="readonly">
 				</div>
 			';
 	    }
-		while ($link = $stmt_2->fetch(PDO::FETCH_ASSOC)) {
+		while ($link = $stmt_2->fetch(PDO::FETCH_ASSOC)	) {
 			print '
 				<div class="list-group list-group-flush scrollarea">
-					<input type="text" class="form-control name_list" value="'.$link['guest_email'].'" id="name" readonly="readonly">
+					<input type="text" class="form-control name_list" value="'.$link['user_email'].'" id="name" readonly="readonly">
 				</div>
 			';
 		}
@@ -163,7 +168,7 @@ while ($task = $stmt->fetch(PDO::FETCH_ASSOC)) {
 		';
 }
 if ($harnas)
-	print '<img src="/harnas.png" width="100">';
+	print '<p class="center-class"><img src="/harnas.png" width="250"></p>';
 ?>
 <script>
 	$(document).ready(function() {
@@ -173,23 +178,18 @@ if ($harnas)
 				method: "POST",
 				data: {
           			task_id : $(this).attr("name"),
-					user_email : "<?php print $_SESSION['email']; ?>",
 					checkbox_id : $(this).attr("id"),
 					state : this.checked ? 1 : 0
 				}
 			}).done(function(inn) {
-				var guzik = $(this);
-				console.log(inn);
 				if (inn == 'NOT OK') {
-					setTimeout(function() {
-				       	guzik.prop('checked', false);
-						console.log('chuj');
-				    }, 1000);
+					alert("Something went wrong...");
 				}
-			});
+			}).fail(function() {
+                alert("Something went wrong...");
+            });
 		});
 		$('.button-delete').click(function  () {
-			console.log('dupa');
 			var result = confirm("Want to " + $(this).attr("name") + "?");
 			if (result) {
 				if ($(this).attr("name") == 'delete') {

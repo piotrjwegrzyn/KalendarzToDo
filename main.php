@@ -25,7 +25,7 @@ if (!isset($_GET['week_offset'])) {
 $today = date('Y-m-d');
 
 for ($i = 0; $i < 7; $i++){
-    $stmt = $dbh->prepare("SELECT id FROM tasks WHERE ((user_email = :user_email
+    $stmt = $dbh->prepare("SELECT id, name FROM tasks WHERE ((user_email = :user_email
            OR id = ANY (SELECT task_id FROM links WHERE guest_email = :user_email))
        AND ((((YEARWEEK(begin_time,1) = YEARWEEK(NOW(),1) + :week_offset)
                     AND (WEEKDAY(begin_time) <= :day_index))
@@ -33,28 +33,24 @@ for ($i = 0; $i < 7; $i++){
     	   AND (((YEARWEEK(end_time,1) = YEARWEEK(NOW(),1) + :week_offset)
                     AND (WEEKDAY(end_time) >= :day_index))
                OR (YEARWEEK(end_time,1) > YEARWEEK(NOW(),1) + :week_offset)
-    )))");
+    ))) ORDER BY begin_time ASC");
+    $busy_day[$i] = 0;
+    $row[$i] = "";
     $stmt->execute([':user_email' => $_SESSION['email'], ':week_offset' => $_GET['week_offset'], ':day_index' => $i]);
-    if ($stmt->fetch(PDO::FETCH_ASSOC)) {
+    while ($task = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $busy_day[$i] = 1;
-    } else {
-        $busy_day[$i] = 0;
+        $row[$i] = $row[$i].$task['name'].", ";
+    }
+    $row[$i] = rtrim($row[$i], ", ");
+
+    if (!$busy_day[$i]) {
+        $row[$i] = "This day is HARNAŚ day";
     }
 
     $date[$i] = date('Y-m-d', strtotime($_GET['week_offset'].' week '.((-1)*$day_index+$i).' days'));
 
     if ($date[$i] == $today)
         $date[$i] = $date[$i]." (TODAY)";
-
-
-    $row[$i] = "This day is ";
-
-    if ($busy_day[$i])
-        $row[$i] = $row[$i]."<b>NAUKA</b>";
-    else
-        $row[$i] = $row[$i]."HARNAŚ";
-
-    $row[$i] = $row[$i]." day";
 }
 ?>
 

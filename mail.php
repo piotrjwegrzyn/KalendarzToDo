@@ -32,11 +32,13 @@
 		$mail->AddAddress($user['email']);
 
 		$template = '
-<html>
+<!DOCTYPE html>
 	<body>
-		<span style="font-weight: bold;">Your tasks for today:</span>
-		<ul>
-
+		<div class="email-background" style="background: #eee;padding: 10px;max-width: 600px;">
+			<div class="email-container" style="background: white;font-family: sans-	serif;overflow: hidden;border-radius: 5px;">
+				<img src="https://media.makeameme.org/created/brace-yourself-tasks-a8f4c4b3e5.jpg">
+				<p style="margin: 20px;font-size: 18px;font-weight: 300;color: #666;line-height: 1.5;text-align: center;">Tasks to do:</p>
+				<ul>
 		';
 		$stmt_task = $dbh->prepare("SELECT * FROM tasks WHERE (
 		    (user_email = :user_email OR id = ANY (SELECT task_id FROM links WHERE guest_email = :user_email))
@@ -49,64 +51,45 @@
 		while ($task = $stmt_task->fetch(PDO::FETCH_ASSOC)) {
 			$anytask = 1;
 			$template = $template . '
-			<li>
-				<p>'.$task['name'].'</p>
-					<ul>
+					<li>'.$task['name'].'</li>
+					<ul style="list-style-type: circle;">
 			';
 
 			$stmt_checkbox = $dbh->prepare("SELECT * FROM checkboxes WHERE task_id = :task_id");
 			$stmt_checkbox->execute([':task_id' => $task['id']]);
 			while ($checkbox = $stmt_checkbox->fetch(PDO::FETCH_ASSOC)) {
 				$template = $template . '
-						<li>'.$checkbox['name'].'</li>
+						<input type="checkbox" onclick="return false"';
+
+				if ($checkbox['state'] == 1) {
+					$template = $template . ' checked="checked"';
+				}
+
+				$template = $template . ' />
+						<label>'.$checkbox['name'].'</label><br>
 				';
 			}
 			$template = $template . '
-					</ul>
-				</li>
+					</ul><br>
 			';
 		}
 		$template = $template . '
-		</ul>
+				</ul>
+				<div class="CheckIt" style="margin: 20px;text-align: center;">
+					<a href="https://s119.labagh.pl/" style="text-decoration: none;display: inline-block;background: #0066FF;color: white;padding: 10px 20px;border-radius: 5px;">! Check Them Out !</a>
+				</div>
+			</div>
+			<div class="footer" style="background: none;padding: 20px;font-size: 12px;text-align: center;">
+				Błaszczyna © Węgrzyn © Kwak
+			</div>
+		</div>
 	</body>
 </html>
 		';
-		if ($anytask) {
+		if ($anytask == 1) {
 			$mail->Body = $template;
 			$mail->Send();
 			print 'sent</br>';
 		}
 	}
 ?>
-
-<!-- <html>
-	<body>
-		<span style="font-weight: bold;">Your tasks for today:</span>
-		<ul>
-		    <li>
-		        <a>1st task's name</a>
-		        <ul>
-		            <li>checkbox a</li>
-		            <li>checkbox b</li>
-		            <li>checkbox c</li>
-		        </ul>
-		    </li>
-		    <li>
-		        <a>2nd task's name</a>
-		        <ul>
-					<li>checkbox a</li>
-		            <li>checkbox b</li>
-		            <li>checkbox c</li>
-		        </ul>
-		    </li>
-		    <li>
-		        <p>3rd task's name</p>
-				<ul>
-					<li>checkbox a</li>
-		            <li>checkbox b</li>
-		            <li>checkbox c</li>
-		        </ul>
-		    </li>
-		</ul>
-	</body>
-</html> -->
