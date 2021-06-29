@@ -54,7 +54,7 @@
 				<label for="floatingRetype">Retype Password</label>
 			</div>
 
-			<div class="form-floating">
+			<div class="form-floating sign-recaptcha">
 				<div class='g-recaptcha' data-sitekey="<?php print $config['recaptcha_public']; ?>" data-size="compact"></div>
 			</div>
             <?php

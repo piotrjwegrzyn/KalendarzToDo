@@ -58,7 +58,7 @@ while ($task = $stmt->fetch(PDO::FETCH_ASSOC)) {
 					<path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
 				</svg>
 				Unlink';
-		}		
+		}
 		print'
 			</a>
 		</div>
@@ -70,7 +70,7 @@ while ($task = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
 			<div class="form-edit contributors-list">
 				<h2 class="fw-normal">Information</h2>
-				<h5>Dates and times</h5>
+				<h5>Date and time</h5>
 				<div class="row">
 
 				<div class="col-12 col-md-6 begin_time py-3 task-times">

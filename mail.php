@@ -30,6 +30,8 @@
 		$mail->SetFrom('todo.calendars@gmail.com');
 		$mail->Subject = 'Daily task notification';
 		$mail->AddAddress($user['email']);
+		$mail->CharSet = 'UTF-8';
+		$mail->Encoding = 'base64';
 
 		$template = '
 <!DOCTYPE html>
@@ -37,7 +39,7 @@
 		<div class="email-background" style="background: #eee;padding: 10px;max-width: 600px;">
 			<div class="email-container" style="background: white;font-family: sans-	serif;overflow: hidden;border-radius: 5px;">
 				<img src="https://media.makeameme.org/created/brace-yourself-tasks-a8f4c4b3e5.jpg">
-				<p style="margin: 20px;font-size: 18px;font-weight: 300;color: #666;line-height: 1.5;text-align: center;">Tasks to do:</p>
+				<p style="margin: 20px;font-size: 18px;font-weight: 300;color: #666;line-height: 1.5;text-align: center;">Tasks for today:</p>
 				<ul>
 		';
 		$stmt_task = $dbh->prepare("SELECT * FROM tasks WHERE (
